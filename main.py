@@ -172,6 +172,7 @@ text_translator = gr.Interface(
         gr.Textbox(
             label="Passcode",
             placeholder="Enter the passcode here",
+            type="password",
             lines=1,
             max_lines=1
         )
@@ -227,6 +228,7 @@ document_translator = gr.Interface(
         gr.Textbox(
             label="Passcode",
             placeholder="Enter the passcode here",
+            type="password",
             lines=1,
             max_lines=1
         )
