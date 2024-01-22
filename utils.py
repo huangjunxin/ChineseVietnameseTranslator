@@ -2,6 +2,7 @@
 import os
 import json
 import re
+import deepl
 from volcengine.ApiInfo import ApiInfo
 from volcengine.Credentials import Credentials
 from volcengine.ServiceInfo import ServiceInfo
@@ -14,6 +15,7 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv()
+deepl_api_key = os.environ.get("DEEPL_API_KEY")
 k_access_key = os.environ.get("K_ACCESS_KEY")
 k_secret_key = os.environ.get("K_SECRET_KEY")
 openai_api_key = os.environ.get("OPENAI_API_KEY")
@@ -161,6 +163,16 @@ def get_language_code(language_name):
     return language_mapping.get(language_name, "Unknown Language Code")
 
 
+def translate_by_deepl_api(source_language, target_language, original_text):
+    target_language_code = get_language_code(target_language).upper()
+    if target_language_code == "EN":
+        target_language_code = "EN-GB"
+    deepl_client = deepl.Translator(deepl_api_key)
+    translated_text = deepl_client.translate_text(original_text, target_lang=target_language_code)
+
+    return translated_text.text
+
+
 def translate_by_volcengine_api(source_language, target_language, original_text):
     k_service_info = ServiceInfo(
         'translate.volcengineapi.com',
@@ -192,8 +204,15 @@ def translate_by_volcengine_api(source_language, target_language, original_text)
 
 # Translation prompt
 def generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry):
-    translation_sample = translate_by_volcengine_api(source_language, target_language, original_text)
+    # Generate the translation sample
+    if source_language == "Chinese" and target_language == "English":
+        translation_sample = translate_by_deepl_api(source_language, target_language, original_text)
+    elif source_language == "English" and target_language == "Chinese":
+        translation_sample = translate_by_deepl_api(source_language, target_language, original_text)
+    else:
+        translation_sample = translate_by_volcengine_api(source_language, target_language, original_text)
 
+    # Generate the translation prompt
     translation_prompt = f"""{source_language}:
 ```
 {original_text}
@@ -204,9 +223,7 @@ def generate_translation_prompt(source_language, target_language, original_text,
 {translation_sample}
 ```
 
-As a bilingual {source_language}-{target_language} native speaker and seasoned translator, your task is to help me proofread the {target_language} translation sample for errors based on the {source_language} text above. The translated text should be in the tone of voice of {tone_of_voice.lower()}, and should be suitable for the {industry.lower()} industry.
-
-Before giving the proofread version, please analyse the translation sample above for any improvements that could be made.
+As a bilingual {source_language}-{target_language} native speaker and seasoned translator, your task is to proofread the {target_language} translation sample for errors based on the {source_language} text above. The translated text should be in the tone of voice of {tone_of_voice.lower()}, and should be suitable for the {industry.lower()} industry. Before providing a proofread version, please provide suggestions for corrections (if any) to the above translation sample.
 
 Your response should be formatted as follows:
 ```

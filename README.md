@@ -11,7 +11,7 @@ pinned: false
 
 # FloweryTranslator
 
-FloweryTranslator is a state-of-the-art, multilingual translation platform designed to transcend linguistic barriers with unparalleled precision. This robust tool leverages the high-speed translation capabilities of Volcengine's AI engine, coupled with the nuanced language understanding of advanced Large Language Models (LLMs) such as OpenAI, Google, Baichuan, and Zhipu. Specially crafted to serve a wide array of languages and cater to distinct industry needs, FloweryTranslator ensues a two-tier translation process, beginning with an initial translation by Volcengine, followed by meticulous proofreading by an LLM of your choice to enhance accuracy and contextual relevance. Whether you need to translate simple text inputs or complex documents, FloweryTranslator is tailored to deliver precision and nuance in translation.
+FloweryTranslator is a state-of-the-art, multilingual translation platform designed to transcend linguistic barriers with unparalleled precision. This robust tool leverages the high-speed translation capabilities of Volcengine's AI engine, coupled with the nuanced language understanding of advanced Large Language Models (LLMs) such as OpenAI, Google, Baichuan, and Zhipu. Specially crafted to serve a wide array of languages and cater to distinct industry needs, FloweryTranslator ensues a two-tier translation process, beginning with an initial translation by DeepL or Volcengine, followed by meticulous proofreading by an LLM of your choice to enhance accuracy and contextual relevance. Whether you need to translate simple text inputs or complex documents, FloweryTranslator is tailored to deliver precision and nuance in translation.
 
 ## Features
 
@@ -23,7 +23,7 @@ FloweryTranslator is a state-of-the-art, multilingual translation platform desig
 
 ## How It Works
 
-Specially crafted to serve a wide array of languages and cater to distinct industry needs, FloweryTranslator ensues a two-tier translation process, beginning with an initial translation by Volcengine, followed by meticulous proofreading by an LLM of your choice to enhance accuracy and contextual relevance. The application has two separate interfaces for translating text and documents, with options to customize the translation based on model, industry sector, and tone. It supports `.docx` and `.pdf` file formats for document translation, with a seamless workflow that includes file uploading, content extraction, and translation.
+Specially crafted to serve a wide array of languages and cater to distinct industry needs, FloweryTranslator ensues a two-tier translation process, beginning with an initial translation by DeepL or Volcengine, followed by meticulous proofreading by an LLM of your choice to enhance accuracy and contextual relevance. The application has two separate interfaces for translating text and documents, with options to customize the translation based on model, industry sector, and tone. It supports `.docx` and `.pdf` file formats for document translation, with a seamless workflow that includes file uploading, content extraction, and translation.
 
 ## Getting Started
 

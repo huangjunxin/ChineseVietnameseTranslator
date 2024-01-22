@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import tempfile
 from zipfile import ZipFile
+from utils import translate_by_deepl_api
 from utils import translate_by_volcengine_api
 from utils import translate_by_openai_api
 from utils import translate_by_baichuan_api
@@ -27,7 +28,9 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
 
     # Generate translated text
     translated_text = ""
-    if model == "Volcengine":
+    if model == "DeepL":
+        translated_text = translate_by_deepl_api(source_language, target_language, original_text)
+    elif model == "Volcengine":
         translated_text = translate_by_volcengine_api(source_language, target_language, original_text)
     elif model == "HKBU ChatGPT (gpt-35-turbo-16k)":
         translated_text = translate_by_hkbu_chatgpt_api(source_language, target_language, original_text, tone_of_voice,
@@ -157,7 +160,7 @@ text_translator = gr.Interface(
         ),
         gr.Dropdown(
             label="Model Provider (Model Name)",
-            choices=["Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
+            choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
                      "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-1106-preview)", "Google Gemini (gemini-pro)",
                      "Baichuan AI (Baichuan2)", "Zhipu AI (glm-3-turbo)", "Zhipu AI (glm-4)"],
             value="OpenAI (gpt-3.5-turbo-1106)"
@@ -208,7 +211,7 @@ document_translator = gr.Interface(
         ),
         gr.Dropdown(
             label="Model Provider (Model Name)",
-            choices=["Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
+            choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
                      "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-1106-preview)", "Google Gemini (gemini-pro)",
                      "Baichuan AI (Baichuan2)", "Zhipu AI (glm-3-turbo)", "Zhipu AI (glm-4)"],
             value="OpenAI (gpt-3.5-turbo-1106)"
