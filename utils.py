@@ -39,6 +39,8 @@ def get_language_code(language_name):
         "Indonesian": "id",
         "Hindi": "hi",
         "English": "en",
+        "English (UK)": "en-gb",
+        "English (US)": "en-us",
         "Hiri": "ho",
         "Hebrew": "he",
         "Spanish": "es",
@@ -66,6 +68,8 @@ def get_language_code(language_name):
         "Twi": "tw",
         "Quechua": "qu",
         "Portuguese": "pt",
+        "Portuguese (Brazilian)": "pt-br",
+        "Portuguese (European)": "pt-pt",
         "Punjabi": "pa",
         "Norwegian": "no",
         "Norwegian Bokmål": "nb",
@@ -165,8 +169,6 @@ def get_language_code(language_name):
 
 def translate_by_deepl_api(source_language, target_language, original_text):
     target_language_code = get_language_code(target_language).upper()
-    if target_language_code == "EN":
-        target_language_code = "EN-GB"
     deepl_client = deepl.Translator(deepl_api_key)
     translated_text = deepl_client.translate_text(original_text, target_lang=target_language_code)
 
@@ -204,12 +206,18 @@ def translate_by_volcengine_api(source_language, target_language, original_text)
 
 # Translation prompt
 def generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry):
+    languages_should_use_deepl = ["Chinese", "English (UK)", "English (US)", "French", "German", "Spanish",
+                                  "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
+                                  "Russian"]
+    # Print the source language, target language
+    print(f"Source language: {source_language}, Language code: {get_language_code(source_language)}, Should use DeepL: {source_language in languages_should_use_deepl}")
+    print(f"Target language: {target_language}, Language code: {get_language_code(target_language)}, Should use DeepL: {target_language in languages_should_use_deepl}")
     # Generate the translation sample
-    if source_language == "Chinese" and target_language == "English":
-        translation_sample = translate_by_deepl_api(source_language, target_language, original_text)
-    elif source_language == "English" and target_language == "Chinese":
+    if source_language in languages_should_use_deepl and target_language in languages_should_use_deepl:
+        print("Using DeepL API")
         translation_sample = translate_by_deepl_api(source_language, target_language, original_text)
     else:
+        print("Using Volcengine API")
         translation_sample = translate_by_volcengine_api(source_language, target_language, original_text)
 
     # Generate the translation prompt
@@ -237,17 +245,20 @@ Rationale:
 
 
 def extract_content_from_response(target_language, response):
+    if "(" in target_language and ")" in target_language:
+        target_language = target_language.replace("(", "\(")
+        target_language = target_language.replace(")", "\)")
     # Define the regex patterns
     rationale_pattern = rf'Rationale:\n(.*?)(?:{target_language} translation \(proofread\):|$)'
     translation_pattern = rf'{target_language} translation \(proofread\):(.*?)$'
 
     # Extract the rationale
     rationale_match = re.search(rationale_pattern, response, re.DOTALL)
-    rationale = rationale_match.group(1).strip().strip("```").strip("\"").strip() if rationale_match else None
+    rationale = rationale_match.group(1).strip() if rationale_match else None
 
     # Extract the Vietnamese translation (proofread)
     translation_match = re.search(translation_pattern, response, re.DOTALL)
-    translation = translation_match.group(1).strip().strip("```").strip("\"").strip() if translation_match else None
+    translation = translation_match.group(1).strip().strip("```").strip() if translation_match else None
 
     return rationale, translation
 

@@ -132,12 +132,16 @@ text_translator = gr.Interface(
     inputs=[
         gr.Dropdown(
             label="Source Language",
-            choices=["Chinese", "English", "Vietnamese", "Japanese", "Korean"],
+            choices=["Chinese", "English (UK)", "English (US)", "Vietnamese", "Japanese", "Korean", "French", "German",
+                     "Spanish", "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
+                     "Russian"],
             value="Chinese"
         ),
         gr.Dropdown(
             label="Target Language",
-            choices=["Chinese", "English", "Vietnamese", "Japanese", "Korean"],
+            choices=["Chinese", "English (UK)", "English (US)", "Vietnamese", "Japanese", "Korean", "French", "German",
+                     "Spanish", "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
+                     "Russian"],
             value="Vietnamese"
         ),
         gr.Textbox(
@@ -184,12 +188,16 @@ document_translator = gr.Interface(
     inputs=[
         gr.Dropdown(
             label="Source Language",
-            choices=["Chinese", "English", "Vietnamese", "Japanese", "Korean"],
+            choices=["Chinese", "English (UK)", "English (US)", "Vietnamese", "Japanese", "Korean", "French", "German",
+                     "Spanish", "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
+                     "Russian"],
             value="Chinese"
         ),
         gr.Dropdown(
             label="Target Language",
-            choices=["Chinese", "English", "Vietnamese", "Japanese", "Korean"],
+            choices=["Chinese", "English (UK)", "English (US)", "Vietnamese", "Japanese", "Korean", "French", "German",
+                     "Spanish", "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
+                     "Russian"],
             value="Vietnamese"
         ),
         gr.File(
