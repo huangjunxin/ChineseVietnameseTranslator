@@ -222,7 +222,7 @@ Rationale:
 def extract_content_from_response(target_language, response):
     # Define the regex patterns
     rationale_pattern = rf'Rationale:\n(.*?)(?:{target_language} translation \(proofread\):|$)'
-    translation_pattern = rf'{target_language} translation \(proofread\):\n```\n(.*?)\n```'
+    translation_pattern = rf'{target_language} translation \(proofread\):(.*?)$'
 
     # Extract the rationale
     rationale_match = re.search(rationale_pattern, response, re.DOTALL)
@@ -230,7 +230,7 @@ def extract_content_from_response(target_language, response):
 
     # Extract the Vietnamese translation (proofread)
     translation_match = re.search(translation_pattern, response, re.DOTALL)
-    translation = translation_match.group(1).strip() if translation_match else None
+    translation = translation_match.group(1).strip().strip("```").strip() if translation_match else None
 
     return rationale, translation
 
