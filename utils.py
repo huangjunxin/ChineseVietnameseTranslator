@@ -226,11 +226,11 @@ def extract_content_from_response(target_language, response):
 
     # Extract the rationale
     rationale_match = re.search(rationale_pattern, response, re.DOTALL)
-    rationale = rationale_match.group(1).strip() if rationale_match else None
+    rationale = rationale_match.group(1).strip().strip("```").strip("\"").strip() if rationale_match else None
 
     # Extract the Vietnamese translation (proofread)
     translation_match = re.search(translation_pattern, response, re.DOTALL)
-    translation = translation_match.group(1).strip().strip("```").strip() if translation_match else None
+    translation = translation_match.group(1).strip().strip("```").strip("\"").strip() if translation_match else None
 
     return rationale, translation
 
