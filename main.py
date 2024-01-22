@@ -170,7 +170,7 @@ text_translator = gr.Interface(
         )
     ],
     outputs=[
-        gr.Textbox(label="Translated Text", lines=5, max_lines=10, show_copy_button=True)
+        gr.Textbox(label="Translated Text", lines=5, max_lines=20, show_copy_button=True)
     ],
     title="FloweryTranslator - Text Translator"
 )
