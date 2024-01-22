@@ -1,6 +1,7 @@
 # utils.py
 import os
 import json
+import re
 from volcengine.ApiInfo import ApiInfo
 from volcengine.Credentials import Credentials
 from volcengine.ServiceInfo import ServiceInfo
@@ -218,28 +219,20 @@ Rationale:
     return translation_prompt
 
 
-def extract_content_from_response(response):
-    # Split the input text into segments based on headings
-    segments = response.split('\n\n')
+def extract_content_from_response(target_language, response):
+    # Define the regex patterns
+    rationale_pattern = rf'Rationale:\n(.*?)(?:{target_language} translation \(proofread\):|$)'
+    translation_pattern = rf'{target_language} translation \(proofread\):\n```\n(.*?)\n```'
 
-    # Define the headings to look for
-    rationale_heading = "Rationale:"
-    translation_heading = "translation (proofread):"
+    # Extract the rationale
+    rationale_match = re.search(rationale_pattern, response, re.DOTALL)
+    rationale = rationale_match.group(1).strip() if rationale_match else None
 
-    # Initialize variables to hold the extracted data
-    rationale = ""
-    translated_text = ""
+    # Extract the Vietnamese translation (proofread)
+    translation_match = re.search(translation_pattern, response, re.DOTALL)
+    translation = translation_match.group(1).strip() if translation_match else None
 
-    # Extract the text following each heading
-    for segment in segments:
-        if rationale_heading in segment:
-            rationale = segment.split(rationale_heading)[1].strip()
-        elif translation_heading in segment:
-            translation_segment = segment.split(translation_heading)[1].strip()
-            # Remove Markdown code block syntax if present
-            translated_text = translation_segment.strip('```').strip()
-
-    return rationale, translated_text
+    return rationale, translation
 
 
 def translate_by_openai_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="gpt-3.5-turbo-1106"):
@@ -252,7 +245,9 @@ def translate_by_openai_api(source_language, target_language, original_text, ton
             HumanMessage(content=translation_prompt)
         ]
     )
-    rationale, translated_text = extract_content_from_response(res.content)
+    res_content = res.content
+    print(res_content)
+    rationale, translated_text = extract_content_from_response(target_language, res_content)
 
     return translated_text
 
@@ -269,7 +264,7 @@ def translate_by_baichuan_api(source_language, target_language, original_text, t
     )
     res_content = res.content
     print(res_content)
-    rationale, translated_text = extract_content_from_response(res_content)
+    rationale, translated_text = extract_content_from_response(target_language, res_content)
 
     return translated_text
 
@@ -312,7 +307,7 @@ def translate_by_hkbu_chatgpt_api(source_language, target_language, original_tex
         return res_content
 
     print(res_content)
-    rationale, translated_text = extract_content_from_response(res_content)
+    rationale, translated_text = extract_content_from_response(target_language, res_content)
 
     return translated_text
 
@@ -325,7 +320,7 @@ def translate_by_google_api(source_language, target_language, original_text, ton
     res = chat.invoke(translation_prompt)
     res_content = res.content
     print(res_content)
-    rationale, translated_text = extract_content_from_response(res_content)
+    rationale, translated_text = extract_content_from_response(target_language, res_content)
 
     return translated_text
 
@@ -344,6 +339,6 @@ def translate_by_zhipuai_api(source_language, target_language, original_text, to
     )
     res_content = res.choices[0].message.content
     print(res_content)
-    rationale, translated_text = extract_content_from_response(res_content)
+    rationale, translated_text = extract_content_from_response(target_language, res_content)
 
     return translated_text
