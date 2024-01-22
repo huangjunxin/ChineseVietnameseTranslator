@@ -33,29 +33,37 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
     elif model == "Volcengine":
         translated_text = translate_by_volcengine_api(source_language, target_language, original_text)
     elif model == "HKBU ChatGPT (gpt-35-turbo-16k)":
-        translated_text = translate_by_hkbu_chatgpt_api(source_language, target_language, original_text, tone_of_voice,
-                                                        industry, "gpt-35-turbo-16k")
+        translation_sample, translated_text = translate_by_hkbu_chatgpt_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "gpt-35-turbo-16k"
+        )
     elif model == "HKBU ChatGPT (gpt-4)":
-        translated_text = translate_by_hkbu_chatgpt_api(source_language, target_language, original_text, tone_of_voice,
-                                                        industry, "gpt-4")
+        translation_sample, translated_text = translate_by_hkbu_chatgpt_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "gpt-4"
+        )
     elif model == "OpenAI (gpt-3.5-turbo-1106)":
-        translated_text = translate_by_openai_api(source_language, target_language, original_text, tone_of_voice,
-                                                  industry, "gpt-3.5-turbo-1106")
+        translation_sample, translated_text = translate_by_openai_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "gpt-3.5-turbo-1106"
+        )
     elif model == "OpenAI (gpt-4-1106-preview)":
-        translated_text = translate_by_openai_api(source_language, target_language, original_text, tone_of_voice,
-                                                  industry, "gpt-4-1106-preview")
+        translation_sample, translated_text = translate_by_openai_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "gpt-4-1106-preview"
+        )
     elif model == "Google Gemini (gemini-pro)":
-        translated_text = translate_by_google_api(source_language, target_language, original_text, tone_of_voice,
-                                                  industry)
+        translation_sample, translated_text = translate_by_google_api(
+            source_language, target_language, original_text, tone_of_voice, industry
+        )
     elif model == "Baichuan AI (Baichuan2)":
-        translated_text = translate_by_baichuan_api(source_language, target_language, original_text, tone_of_voice,
-                                                    industry)
+        translation_sample, translated_text = translate_by_baichuan_api(
+            source_language, target_language, original_text, tone_of_voice, industry
+        )
     elif model == "Zhipu AI (glm-3-turbo)":
-        translated_text = translate_by_zhipuai_api(source_language, target_language, original_text, tone_of_voice,
-                                                   industry, "glm-3-turbo")
+        translation_sample, translated_text = translate_by_zhipuai_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "glm-3-turbo"
+        )
     elif model == "Zhipu AI (glm-4)":
-        translated_text = translate_by_zhipuai_api(source_language, target_language, original_text, tone_of_voice,
-                                                   industry, "glm-4")
+        translation_sample, translated_text = translate_by_zhipuai_api(
+            source_language, target_language, original_text, tone_of_voice, industry, "glm-4"
+        )
 
     return translated_text
 

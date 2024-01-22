@@ -241,7 +241,7 @@ Rationale:
 
     print(translation_prompt)
 
-    return translation_prompt
+    return translation_sample, translation_prompt
 
 
 def extract_content_from_response(target_language, response):
@@ -265,7 +265,7 @@ def extract_content_from_response(target_language, response):
 
 def translate_by_openai_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="gpt-3.5-turbo-1106"):
     # Prompt to provide translation
-    translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
     # Translate by accessing OpenAI API
     chat = ChatOpenAI(temperature=0.7, openai_api_key=openai_api_key, model_name=model_name)
     res = chat(
@@ -277,12 +277,12 @@ def translate_by_openai_api(source_language, target_language, original_text, ton
     print(res_content)
     rationale, translated_text = extract_content_from_response(target_language, res_content)
 
-    return translated_text
+    return translation_sample, translated_text
 
 
 def translate_by_baichuan_api(source_language, target_language, original_text, tone_of_voice, industry):
     # Prompt to provide translation
-    translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
     # Translate by accessing Baichuan API
     chat = ChatBaichuan(temperature=0.7, baichuan_api_key=baichuan_api_key, baichuan_secret_key=baichuan_secret_key, model='Baichuan2')
     res = chat(
@@ -294,7 +294,7 @@ def translate_by_baichuan_api(source_language, target_language, original_text, t
     print(res_content)
     rationale, translated_text = extract_content_from_response(target_language, res_content)
 
-    return translated_text
+    return translation_sample, translated_text
 
 
 def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo-16k", temperature=0.7):
@@ -318,7 +318,7 @@ def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo-16k", temp
 
 def translate_by_hkbu_chatgpt_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="gpt-35-turbo-16k"):
     # Prompt to provide translation
-    translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
     res = ""
     try:
         # Translate by accessing HKBU ChatGPT API
@@ -337,12 +337,12 @@ def translate_by_hkbu_chatgpt_api(source_language, target_language, original_tex
     print(res_content)
     rationale, translated_text = extract_content_from_response(target_language, res_content)
 
-    return translated_text
+    return translation_sample, translated_text
 
 
 def translate_by_google_api(source_language, target_language, original_text, tone_of_voice, industry):
     # Prompt to provide translation
-    translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
     # Translate by accessing Google API
     chat = ChatGoogleGenerativeAI(temperature=0.7, model="gemini-pro")
     res = chat.invoke(translation_prompt)
@@ -350,12 +350,12 @@ def translate_by_google_api(source_language, target_language, original_text, ton
     print(res_content)
     rationale, translated_text = extract_content_from_response(target_language, res_content)
 
-    return translated_text
+    return translation_sample, translated_text
 
 
 def translate_by_zhipuai_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="glm-3-turbo"):
     # Prompt to provide translation
-    translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
     # Translate by accessing ZhipuAI API
     chat = ZhipuAI(api_key=zhipuai_api_key)
     res = chat.chat.completions.create(
@@ -369,4 +369,4 @@ def translate_by_zhipuai_api(source_language, target_language, original_text, to
     print(res_content)
     rationale, translated_text = extract_content_from_response(target_language, res_content)
 
-    return translated_text
+    return translation_sample, translated_text
