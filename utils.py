@@ -176,6 +176,9 @@ def translate_by_deepl_api(source_language, target_language, original_text):
 
 
 def translate_by_volcengine_api(source_language, target_language, original_text):
+    source_language_code = get_language_code(source_language)
+    target_language_code = get_language_code(target_language)
+
     k_service_info = ServiceInfo(
         'translate.volcengineapi.com',
         {'Content-Type': 'application/json'},
@@ -192,8 +195,7 @@ def translate_by_volcengine_api(source_language, target_language, original_text)
     }
     service = Service(k_service_info, k_api_info)
     body = {
-        'SourceLanguage': get_language_code(source_language),
-        'TargetLanguage': get_language_code(target_language),
+        'TargetLanguage': target_language_code,
         'TextList': [original_text],
     }
     res = service.json('translate', {}, json.dumps(body))
