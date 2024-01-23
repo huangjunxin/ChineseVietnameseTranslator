@@ -25,6 +25,12 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
     # Check if the source language and target language are the same
     if source_language == target_language:
         return original_text
+    # Check if the original text is empty
+    if original_text == "":
+        return ""
+    # Check if the original text is too long
+    if len(original_text) > 1000:
+        return "The original text is too long. Please enter a text with less than 1000 characters."
 
     # Generate translated text
     translated_text = ""
