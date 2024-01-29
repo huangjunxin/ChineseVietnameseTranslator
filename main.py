@@ -50,9 +50,9 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
         translation_sample, translated_text = translate_by_openai_api(
             source_language, target_language, original_text, tone_of_voice, industry, "gpt-3.5-turbo-1106"
         )
-    elif model == "OpenAI (gpt-4-1106-preview)":
+    elif model == "OpenAI (gpt-4-0125-preview)":
         translation_sample, translated_text = translate_by_openai_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "gpt-4-1106-preview"
+            source_language, target_language, original_text, tone_of_voice, industry, "gpt-4-0125-preview"
         )
     elif model == "Google Gemini (gemini-pro)":
         translation_sample, translated_text = translate_by_google_api(
@@ -179,7 +179,7 @@ text_translator = gr.Interface(
         gr.Dropdown(
             label="Model Provider (Model Name)",
             choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
-                     "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-1106-preview)", "Google Gemini (gemini-pro)",
+                     "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-0125-preview)", "Google Gemini (gemini-pro)",
                      "Baichuan AI (Baichuan2)", "Zhipu AI (glm-3-turbo)", "Zhipu AI (glm-4)"],
             value="OpenAI (gpt-3.5-turbo-1106)"
         ),
@@ -235,7 +235,7 @@ document_translator = gr.Interface(
         gr.Dropdown(
             label="Model Provider (Model Name)",
             choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4)",
-                     "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-1106-preview)", "Google Gemini (gemini-pro)",
+                     "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-0125-preview)", "Google Gemini (gemini-pro)",
                      "Baichuan AI (Baichuan2)", "Zhipu AI (glm-3-turbo)", "Zhipu AI (glm-4)"],
             value="OpenAI (gpt-3.5-turbo-1106)"
         ),
