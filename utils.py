@@ -302,6 +302,10 @@ def translate_by_baichuan_api(source_language, target_language, original_text, t
 def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo-16k", temperature=0.7):
     basic_url = "https://chatgpt.hkbu.edu.hk/general/rest"
     api_version = "2023-08-01-preview"
+    if model_name == "gpt-35-turbo-16k":
+        api_version = "2023-08-01-preview"
+    elif model_name == "gpt-4-turbo":
+        api_version = "2023-12-01-preview"
     url = basic_url + "/deployments/" + model_name + "/chat/completions/?api-version=" + api_version
     headers = {'Content-Type': 'application/json', 'api-key': hkbu_chatgpt_api_key}
     payload = {'messages': conversation_list, 'temperature': temperature}
@@ -313,7 +317,7 @@ def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo-16k", temp
             data = response.json()
             return data
         else:
-            return 'Error:', response
+            return 'Error', response.status_code, response.text
     except requests.RequestException as e:
         return 'Error:', e
 
