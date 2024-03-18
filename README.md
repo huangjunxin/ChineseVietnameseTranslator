@@ -5,7 +5,7 @@ colorFrom: purple
 colorTo: pink
 sdk: gradio
 sdk_version: 4.8.0
-app_file: main.py
+app_file: app/main.py
 pinned: false
 ---
 
