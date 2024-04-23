@@ -78,3 +78,5 @@ js/storybook/theme.css
 
 # playwright
 .config/playwright/.cache
+
+/tests
