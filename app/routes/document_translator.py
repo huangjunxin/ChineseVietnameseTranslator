@@ -114,8 +114,8 @@ document_translator = gr.Interface(
         ),
         gr.Dropdown(
             label="Model Provider (Model Name)",
-            choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo-16k)", "HKBU ChatGPT (gpt-4-turbo)",
-                     "OpenAI (gpt-3.5-turbo-1106)", "OpenAI (gpt-4-0125-preview)", "Google Gemini (gemini-pro)",
+            choices=["DeepL", "Volcengine", "HKBU ChatGPT (gpt-35-turbo)", "HKBU ChatGPT (gpt-4-turbo)",
+                     "OpenAI (gpt-3.5-turbo-0125)", "OpenAI (gpt-4-turbo-preview)", "Google Gemini (gemini-pro)",
                      "Baichuan AI (Baichuan2)", "Zhipu AI (glm-3-turbo)", "Zhipu AI (glm-4)"],
             value="OpenAI (gpt-3.5-turbo-1106)"
         ),
