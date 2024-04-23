@@ -13,7 +13,7 @@ openai_api_key = os.environ.get("OPENAI_API_KEY")
 
 def translate_by_openai_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="gpt-3.5-turbo-1106"):
     # Prompt to provide translation
-    translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+    translation_sample, translation_prompt, translate_time = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
 
     start_time = time.time()
 
@@ -27,10 +27,10 @@ def translate_by_openai_api(source_language, target_language, original_text, ton
     res_content = res.content
 
     end_time = time.time()
-    time_elapsed = end_time - start_time
-    print("Time Elapsed:", time_elapsed, "seconds")
+    llm_time = end_time - start_time
+    print("Time Elapsed:", llm_time, "seconds")
     print("Result content:", res_content)
 
     rationale, translated_text = extract_json_from_response(target_language, res_content)
 
-    return translation_sample, rationale, translated_text, res_content, time_elapsed
+    return translation_sample, rationale, translated_text, res_content, translate_time, llm_time

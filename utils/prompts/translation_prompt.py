@@ -5,6 +5,9 @@ from utils.utils.other_utils import get_language_code
 
 # Translation prompt
 def generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry):
+    print("Generating translation prompt...")
+
+    # Languages that should use DeepL API
     languages_should_use_deepl = ["Chinese", "English (UK)", "English (US)", "French", "German", "Spanish",
                                   "Portuguese (Brazilian)", "Portuguese (European)", "Italian", "Dutch", "Polish",
                                   "Russian"]
@@ -13,11 +16,9 @@ def generate_translation_prompt(source_language, target_language, original_text,
     print(f"Target language: {target_language}, Language code: {get_language_code(target_language)}, Should use DeepL: {target_language in languages_should_use_deepl}")
     # Generate the translation sample
     if source_language in languages_should_use_deepl and target_language in languages_should_use_deepl:
-        print("Using DeepL API")
-        translation_sample = translate_by_deepl_api(source_language, target_language, original_text)
+        translation_sample, translate_time = translate_by_deepl_api(source_language, target_language, original_text)
     else:
-        print("Using Volcengine API")
-        translation_sample = translate_by_volcengine_api(source_language, target_language, original_text)
+        translation_sample, translate_time = translate_by_volcengine_api(source_language, target_language, original_text)
 
     # Generate the translation prompt
     translation_prompt = f"""{source_language}:
@@ -40,6 +41,7 @@ Your response should be in the following json format:
 }}
 ```"""
 
-    print(translation_prompt)
+    print("Translate Time:", translate_time, "seconds")
+    print("Translation Sample:", translation_sample)
 
-    return translation_sample, translation_prompt
+    return translation_sample, translation_prompt, translate_time

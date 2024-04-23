@@ -1,4 +1,5 @@
 import os
+import time
 import json
 from volcengine.ApiInfo import ApiInfo
 from volcengine.Credentials import Credentials
@@ -14,6 +15,10 @@ k_secret_key = os.environ.get("K_SECRET_KEY")
 
 
 def translate_by_volcengine_api(source_language, target_language, original_text):
+    print("Using Volcengine API")
+
+    start_time = time.time()
+
     source_language_code = get_language_code(source_language)
     target_language_code = get_language_code(target_language)
 
@@ -41,4 +46,9 @@ def translate_by_volcengine_api(source_language, target_language, original_text)
     translated_dict = json.loads(res)
     translated_text = translated_dict["TranslationList"][0]["Translation"]
 
-    return translated_text
+    end_time = time.time()
+    translate_time = end_time - start_time
+    print("Time Elapsed:", translate_time, "seconds")
+    print("Result content:", translated_text)
+
+    return translated_text, translate_time

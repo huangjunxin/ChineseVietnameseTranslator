@@ -1,5 +1,8 @@
 import os
 import gradio as gr
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
 from utils.translate.translate_deepl import translate_by_deepl_api
 from utils.translate.translate_volcengine import translate_by_volcengine_api
 from utils.translate.translate_hkbu_chatgpt import translate_by_hkbu_chatgpt_api
@@ -7,10 +10,14 @@ from utils.translate.translate_openrouter import translate_by_openrouter_api
 from utils.translate.translate_google import translate_by_google_api
 from utils.translate.translate_baichuan import translate_by_baichuan_api
 from utils.translate.translate_zhipuai import translate_by_zhipuai_api
-from dotenv import load_dotenv
 
 load_dotenv()
 passcode_key = os.getenv("PASSCODE_KEY")
+supabase_url: str = os.environ.get("SUPABASE_URL")
+supabase_key: str = os.environ.get("SUPABASE_KEY")
+
+# Create a new Supabase client
+supabase: Client = create_client(supabase_url, supabase_key)
 
 # Model Dictionary for Translate by HKBU ChatGPT API
 model_dict_translate_by_hkbu_chatgpt_api = {
@@ -32,6 +39,13 @@ model_dict_translate_by_zhipuai_api = {
 
 
 def translate_text(source_language, target_language, original_text, tone_of_voice, industry, model, passcode):
+    translation_sample = None
+    rationale = None
+    translated_text = ""
+    res_content = None
+    translate_time = None
+    llm_time = None
+
     # Check if the passcode is correct
     if passcode != passcode_key:
         return "The passcode is incorrect. Please try again."
@@ -46,34 +60,51 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
         return "The original text is too long. Please enter a text with less than 1000 characters."
 
     # Generate translated text
-    translated_text = ""
     if model == "DeepL":
-        translated_text = translate_by_deepl_api(source_language, target_language, original_text)
+        translated_text, translate_time = translate_by_deepl_api(source_language, target_language, original_text)
     elif model == "Volcengine":
-        translated_text = translate_by_volcengine_api(source_language, target_language, original_text)
+        translated_text, translate_time = translate_by_volcengine_api(source_language, target_language, original_text)
     elif model in model_dict_translate_by_hkbu_chatgpt_api:
-        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_hkbu_chatgpt_api(
+        translation_sample, rationale, translated_text, res_content, translate_time, llm_time = translate_by_hkbu_chatgpt_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_hkbu_chatgpt_api[model]
         )
     elif model in model_dict_translate_by_openrouter_api:
-        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_openrouter_api(
+        translation_sample, rationale, translated_text, res_content, translate_time, llm_time = translate_by_openrouter_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_openrouter_api[model]
         )
     elif model == "Google Gemini (gemini-pro)":
-        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_google_api(
+        translation_sample, rationale, translated_text, res_content, translate_time, llm_time = translate_by_google_api(
             source_language, target_language, original_text, tone_of_voice, industry
         )
     elif model == "Baichuan AI (Baichuan2)":
-        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_baichuan_api(
+        translation_sample, rationale, translated_text, res_content, translate_time, llm_time = translate_by_baichuan_api(
             source_language, target_language, original_text, tone_of_voice, industry
         )
     elif model in model_dict_translate_by_zhipuai_api:
-        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_zhipuai_api(
+        translation_sample, rationale, translated_text, res_content, translate_time, llm_time = translate_by_zhipuai_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_zhipuai_api[model]
         )
+
+    # Insert the translation record into the database
+    supabase.table("translations").insert([
+        {
+            "source_language": source_language,
+            "target_language": target_language,
+            "original_text": original_text,
+            "tone_of_voice": tone_of_voice,
+            "industry": industry,
+            "model": model,
+            "translate_sample": translation_sample,
+            "rationale": rationale,
+            "translated_text": translated_text,
+            "res_content": res_content,
+            "translate_time": translate_time,
+            "llm_time": llm_time,
+        }
+    ]).execute()
 
     return translated_text
 
