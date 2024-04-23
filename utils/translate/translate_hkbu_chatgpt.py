@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import requests
 
 from utils.prompts.translation_prompt import generate_translation_prompt
-from utils.utils.other_utils import extract_content_from_response
+from utils.utils.other_utils import extract_json_from_response
 
 load_dotenv()
 hkbu_chatgpt_api_key = os.environ.get("HKBU_CHATGPT_API_KEY")
@@ -47,6 +47,6 @@ def translate_by_hkbu_chatgpt_api(source_language, target_language, original_tex
         return res_content
 
     print(res_content)
-    rationale, translated_text = extract_content_from_response(target_language, res_content)
+    rationale, translated_text = extract_json_from_response(target_language, res_content)
 
     return translation_sample, translated_text

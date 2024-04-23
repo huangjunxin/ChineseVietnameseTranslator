@@ -12,6 +12,24 @@ from dotenv import load_dotenv
 load_dotenv()
 passcode_key = os.getenv("PASSCODE_KEY")
 
+# Model Dictionary for Translate by HKBU ChatGPT API
+model_dict_translate_by_hkbu_chatgpt_api = {
+    "HKBU ChatGPT (gpt-35-turbo-16k)": "gpt-35-turbo-16k",
+    "HKBU ChatGPT (gpt-4-turbo)": "gpt-4-turbo"
+}
+
+# Model Dictionary for Translate by OpenRouter API
+model_dict_translate_by_openrouter_api = {
+    "OpenAI (gpt-3.5-turbo-0125)": "openai/gpt-3.5-turbo-0125",
+    "OpenAI (gpt-4-turbo-preview)": "openai/gpt-4-turbo-preview"
+}
+
+# Model Dictionary for Translate by Zhipu AI API
+model_dict_translate_by_zhipuai_api = {
+    "Zhipu AI (glm-3-turbo)": "glm-3-turbo",
+    "Zhipu AI (glm-4)": "glm-4"
+}
+
 
 def translate_text(source_language, target_language, original_text, tone_of_voice, industry, model, passcode):
     # Check if the passcode is correct
@@ -33,21 +51,15 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
         translated_text = translate_by_deepl_api(source_language, target_language, original_text)
     elif model == "Volcengine":
         translated_text = translate_by_volcengine_api(source_language, target_language, original_text)
-    elif model == "HKBU ChatGPT (gpt-35-turbo-16k)":
+    elif model in model_dict_translate_by_hkbu_chatgpt_api:
         translation_sample, translated_text = translate_by_hkbu_chatgpt_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "gpt-35-turbo-16k"
+            source_language, target_language, original_text, tone_of_voice, industry,
+            model_dict_translate_by_hkbu_chatgpt_api[model]
         )
-    elif model == "HKBU ChatGPT (gpt-4-turbo)":
-        translation_sample, translated_text = translate_by_hkbu_chatgpt_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "gpt-4-turbo"
-        )
-    elif model == "OpenAI (gpt-3.5-turbo-0125)":
+    elif model in model_dict_translate_by_openrouter_api:
         translation_sample, translated_text = translate_by_openrouter_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "openai/gpt-3.5-turbo-0125"
-        )
-    elif model == "OpenAI (gpt-4-turbo-preview)":
-        translation_sample, translated_text = translate_by_openrouter_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "openai/gpt-4-turbo-preview"
+            source_language, target_language, original_text, tone_of_voice, industry,
+            model_dict_translate_by_openrouter_api[model]
         )
     elif model == "Google Gemini (gemini-pro)":
         translation_sample, translated_text = translate_by_google_api(
@@ -57,13 +69,10 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
         translation_sample, translated_text = translate_by_baichuan_api(
             source_language, target_language, original_text, tone_of_voice, industry
         )
-    elif model == "Zhipu AI (glm-3-turbo)":
+    elif model in model_dict_translate_by_zhipuai_api:
         translation_sample, translated_text = translate_by_zhipuai_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "glm-3-turbo"
-        )
-    elif model == "Zhipu AI (glm-4)":
-        translation_sample, translated_text = translate_by_zhipuai_api(
-            source_language, target_language, original_text, tone_of_voice, industry, "glm-4"
+            source_language, target_language, original_text, tone_of_voice, industry,
+            model_dict_translate_by_zhipuai_api[model]
         )
 
     return translated_text

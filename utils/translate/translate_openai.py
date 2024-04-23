@@ -4,7 +4,7 @@ from langchain.schema import HumanMessage
 from dotenv import load_dotenv
 
 from utils.prompts.translation_prompt import generate_translation_prompt
-from utils.utils.other_utils import extract_content_from_response
+from utils.utils.other_utils import extract_json_from_response
 
 load_dotenv()
 openai_api_key = os.environ.get("OPENAI_API_KEY")
@@ -22,6 +22,6 @@ def translate_by_openai_api(source_language, target_language, original_text, ton
     )
     res_content = res.content
     print(res_content)
-    rationale, translated_text = extract_content_from_response(target_language, res_content)
+    rationale, translated_text = extract_json_from_response(target_language, res_content)
 
     return translation_sample, translated_text

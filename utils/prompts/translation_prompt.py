@@ -32,10 +32,12 @@ def generate_translation_prompt(source_language, target_language, original_text,
 
 As a bilingual {source_language}-{target_language} native speaker and seasoned translator, your task is to proofread the {target_language} translation sample for errors based on the {source_language} text above. The translated text should be in the tone of voice of {tone_of_voice.lower()}, and should be suitable for the {industry.lower()} industry. Before providing a proofread version, please provide suggestions for corrections (if any) to the above translation sample.
 
-Your response should be formatted as follows:
+Your response should be in the following json format:
 ```
-Rationale:
-{target_language} translation (proofread):
+{{
+    "rationale": "",
+    "{target_language} translation (proofread)": ""
+}}
 ```"""
 
     print(translation_prompt)

@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 from utils.prompts.translation_prompt import generate_translation_prompt
-from utils.utils.other_utils import extract_content_from_response
+from utils.utils.other_utils import extract_json_from_response
 
 load_dotenv()
 openrouter_api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -66,6 +66,6 @@ def translate_by_openrouter_api(source_language, target_language, original_text,
     print("Time Elapsed:", time_elapsed, "seconds")
     print("Chat Response:", chat_response)
 
-    rationale, translated_text = extract_content_from_response(target_language, chat_response)
+    rationale, translated_text = extract_json_from_response(target_language, chat_response)
 
     return translation_sample, translated_text

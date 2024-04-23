@@ -1,4 +1,5 @@
 import re
+import json
 
 
 # Get the language code from the language name
@@ -143,7 +144,17 @@ def get_language_code(language_name):
     return language_mapping.get(language_name, "Unknown Language Code")
 
 
-# Extract the rationale and translation from the response
+# Extract the rationale and translation from the response (json)
+def extract_json_from_response(target_language, response):
+    response = response.replace("```", "")
+    response_data = json.loads(response)
+    rationale = response_data["rationale"]
+    translation = response_data[f"{target_language} translation (proofread)"]
+
+    return rationale, translation
+
+
+# Extract the rationale and translation from the response (content)
 def extract_content_from_response(target_language, response):
     if "(" in target_language and ")" in target_language:
         target_language = target_language.replace("(", "\(")
