@@ -118,7 +118,7 @@ document_translator = gr.Interface(
                      "OpenAI (gpt-3.5-turbo-0125)", "OpenAI (gpt-4-turbo-preview)",
                      "HKBU ChatGPT (gpt-35-turbo)", "HKBU ChatGPT (gpt-4-turbo)",
                      "Google Gemini (gemini-pro)"],
-            value="OpenAI (gpt-3.5-turbo-1106)"
+            value="OpenAI (gpt-3.5-turbo-0125)"
         ),
         gr.Textbox(
             label="Passcode",
