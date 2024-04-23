@@ -52,25 +52,25 @@ def translate_text(source_language, target_language, original_text, tone_of_voic
     elif model == "Volcengine":
         translated_text = translate_by_volcengine_api(source_language, target_language, original_text)
     elif model in model_dict_translate_by_hkbu_chatgpt_api:
-        translation_sample, translated_text = translate_by_hkbu_chatgpt_api(
+        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_hkbu_chatgpt_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_hkbu_chatgpt_api[model]
         )
     elif model in model_dict_translate_by_openrouter_api:
-        translation_sample, translated_text = translate_by_openrouter_api(
+        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_openrouter_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_openrouter_api[model]
         )
     elif model == "Google Gemini (gemini-pro)":
-        translation_sample, translated_text = translate_by_google_api(
+        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_google_api(
             source_language, target_language, original_text, tone_of_voice, industry
         )
     elif model == "Baichuan AI (Baichuan2)":
-        translation_sample, translated_text = translate_by_baichuan_api(
+        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_baichuan_api(
             source_language, target_language, original_text, tone_of_voice, industry
         )
     elif model in model_dict_translate_by_zhipuai_api:
-        translation_sample, translated_text = translate_by_zhipuai_api(
+        translation_sample, rationale, translated_text, res_content, time_elapsed = translate_by_zhipuai_api(
             source_language, target_language, original_text, tone_of_voice, industry,
             model_dict_translate_by_zhipuai_api[model]
         )

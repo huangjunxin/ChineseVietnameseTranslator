@@ -55,17 +55,17 @@ def translate_by_openrouter_api(source_language, target_language, original_text,
             temperature=0.7
         )
         if isinstance(res, tuple) and res[0] == 'Error':
-            chat_response = res
+            res_content = res
         else:
-            chat_response = res["choices"][0]["message"]["content"]
+            res_content = res["choices"][0]["message"]["content"]
     except Exception as e:
-        chat_response = 'Error:', e, res
+        res_content = 'Error:', e, res
 
     end_time = time.time()
     time_elapsed = end_time - start_time
     print("Time Elapsed:", time_elapsed, "seconds")
-    print("Chat Response:", chat_response)
+    print("Result content:", res_content)
 
-    rationale, translated_text = extract_json_from_response(target_language, chat_response)
+    rationale, translated_text = extract_json_from_response(target_language, res_content)
 
-    return translation_sample, translated_text
+    return translation_sample, rationale, translated_text, res_content, time_elapsed

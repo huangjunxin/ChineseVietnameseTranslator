@@ -1,4 +1,5 @@
 import os
+import time
 from zhipuai import ZhipuAI
 from dotenv import load_dotenv
 
@@ -17,6 +18,9 @@ zhipuai_api_key = os.environ.get("ZHIPUAI_API_KEY")
 def translate_by_zhipuai_api(source_language, target_language, original_text, tone_of_voice, industry, model_name="glm-3-turbo"):
     # Prompt to provide translation
     translation_sample, translation_prompt = generate_translation_prompt(source_language, target_language, original_text, tone_of_voice, industry)
+
+    start_time = time.time()
+
     # Translate by accessing ZhipuAI API
     chat = ZhipuAI(api_key=zhipuai_api_key)
     res = chat.chat.completions.create(
@@ -27,7 +31,12 @@ def translate_by_zhipuai_api(source_language, target_language, original_text, to
         temperature=0.7
     )
     res_content = res.choices[0].message.content
-    print(res_content)
+
+    end_time = time.time()
+    time_elapsed = end_time - start_time
+    print("Time Elapsed:", time_elapsed, "seconds")
+    print("Result content:", res_content)
+
     rationale, translated_text = extract_json_from_response(target_language, res_content)
 
-    return translation_sample, translated_text
+    return translation_sample, rationale, translated_text, res_content, time_elapsed
