@@ -9,7 +9,7 @@ load_dotenv()
 hkbu_chatgpt_api_key = os.environ.get("HKBU_CHATGPT_API_KEY")
 
 
-def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo-16k", temperature=0.7):
+def call_hkbu_chatgpt_api(conversation_list, model_name="gpt-35-turbo", temperature=0.7):
     basic_url = "https://chatgpt.hkbu.edu.hk/general/rest"
     api_version = "2024-02-15-preview"
     url = basic_url + "/deployments/" + model_name + "/chat/completions/?api-version=" + api_version

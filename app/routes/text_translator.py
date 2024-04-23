@@ -14,7 +14,7 @@ passcode_key = os.getenv("PASSCODE_KEY")
 
 # Model Dictionary for Translate by HKBU ChatGPT API
 model_dict_translate_by_hkbu_chatgpt_api = {
-    "HKBU ChatGPT (gpt-35-turbo-16k)": "gpt-35-turbo-16k",
+    "HKBU ChatGPT (gpt-35-turbo)": "gpt-35-turbo",
     "HKBU ChatGPT (gpt-4-turbo)": "gpt-4-turbo"
 }
 
