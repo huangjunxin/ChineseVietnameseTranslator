@@ -146,7 +146,10 @@ def get_language_code(language_name):
 
 # Extract the rationale and translation from the response (json)
 def extract_json_from_response(target_language, response):
+    # Remove the "```" from the response
     response = response.replace("```", "")
+    # Remove the initial text before the json
+    response = re.sub(r".*\s*{", '{', response, count=1)
     response_data = json.loads(response)
     rationale = response_data["rationale"]
     translation = response_data[f"{target_language} translation (proofread)"]
